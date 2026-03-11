@@ -9,6 +9,15 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 
     <style>
+ body {
+     overflow-x: hidden;
+ }
+
+ /* Ensure the main content area doesn't bleed into sidebar */
+ .main-content, main, .content-wrapper {
+     min-width: 0;
+     overflow-x: hidden;
+ }
         .sidebar {
             position: fixed;
             top: 0;
