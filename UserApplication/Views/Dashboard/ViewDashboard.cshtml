@@ -1,0 +1,67 @@
+﻿@model UserApplication.API.UserModule.DTO.DashViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Dashboard";
+}
+<style>
+    .row.user-cards {
+        display: flex;
+        flex-wrap: wrap; /* allows cards to move to next line */
+        gap: 1rem; /* spacing between cards */
+    }
+</style>
+<h2 class="mb-4">Dashboard</h2>
+
+<div class="row mb-4">
+    <div class="col-md-8">
+        <div class="card text-white bg-primary shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Total Users</h5>
+                <p class="card-text display-4">@Model.TotalUsers</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h4 class="mb-3">Last 5 Users</h4>
+
+<div class="row g-3">
+    @foreach (var user in Model.LastFiveUsers)
+    {
+        <div class="col-lg-3 col-md-4 col-sm-6 col-12">
+            <div class="card shadow-sm h-100 text-center p-3" style="    align-items: center">
+                <img src="@Url.Content(user.ProfileImage != null ? "~/images/" + user.ProfileImage : "~/images/default-profile.png")"
+                     class="rounded-circle mb-3"
+                     width="80"
+                     height="80"
+                     style="object-fit: cover; max-width: 100%;" />
+                <h5 class="card-title">@user.UserName</h5>
+                <p class="card-text mb-1"><strong>Email:</strong> @user.EmailId</p>
+                <p class="card-text mb-1"><strong>Phone:</strong> @user.PhoneNumber</p>
+                <p class="card-text mb-1"><strong>Country:</strong> @user.Country</p>
+                <p class="card-text text-muted"><small>Joined: @user.CreatedAt.ToString("dd MMM yyyy")</small></p>
+            </div>
+        </div>
+    }
+</div>
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.11/signalr.min.js"></script>
+
+    <script>
+        // Create connection
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/dashboardHub")
+            .build();
+
+        connection.start().then(() => {
+            console.log("SignalR Connected");
+        }).catch(err => console.error(err.toString()));
+
+        // Receive updates
+        connection.on("ReceiveUserUpdate", function () {
+            console.log("Data updated, refreshing page...");
+            location.reload(); // simple approach: reload the page
+        });
+    </script>
+}

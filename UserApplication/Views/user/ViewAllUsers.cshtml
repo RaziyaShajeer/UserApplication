@@ -1,0 +1,65 @@
+﻿@model IEnumerable<Domain.Models.Users>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "ViewAllUsers";
+}
+
+<h2 class="mb-4">All Users</h2>
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Message"]
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Error"]
+    </div>
+}
+<p>
+    <a asp-action="Register" asp-controller="Authentication" class="btn btn-primary">Create New User</a>
+</p>
+
+<div class="container">
+    <div class="row">
+        @if (Model == null || !Model.Any())
+        {
+            <h3>@ViewBag.Message"</h3>
+        }
+        else
+        {
+            @foreach (var item in Model)
+            {
+                <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+                    <div class="card shadow-sm h-100">
+
+                        <div class="card-body text-center">
+
+                            <img src="@Url.Content(item.ProfileImage != null ? "~/images/" + item.ProfileImage : "~/images/default-profile.png")"
+                                 class="rounded-circle mb-3"
+                                 width="80"
+                                 height="80"
+                                 style="object-fit: cover; max-width: 100%;" />
+
+                            <h5 class="card-title">@item.UserName</h5>
+
+                            <p class="card-text mb-1"><strong>Email:</strong> @item.EmailId</p>
+                            <p class="card-text mb-1"><strong>Phone:</strong> @item.PhoneNumber</p>
+                            <p class="card-text"><strong>Country:</strong> @item.Country</p>
+                                <input type="hidden" name="id" value="@item.UserId" />
+                            <div class="d-flex justify-content-center gap-2">
+                                <a asp-action="EditUser" asp-route-id="@item.UserId" asp-controller="User" class="btn btn-warning btn-sm">Edit</a>
+                                <a asp-action="Details" asp-route-id="@item.UserId" class="btn btn-info btn-sm">Details</a>
+                                <a asp-action="Delete" asp-controller="User" asp-route-id="@item.UserId" class="btn btn-danger btn-sm">Delete</a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>

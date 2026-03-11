@@ -1,0 +1,89 @@
+﻿@model Domain.Models.Users
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Edit User";
+}
+
+<!-- Full page background -->
+<div class="d-flex align-items-center vh-100" style="margin-left:10px;">
+    <div class="card shadow-lg p-4" style="width: 100%; max-width: 450px; border-radius: 1rem;padding:10px;">
+        <div class="text-center mb-4">
+            <h1 class="fw-bold text-primary">Edit User</h1>
+            <p class="text-muted">Update your account information</p>
+        </div>
+
+        <form asp-action="EditUser" enctype="multipart/form-data" method="post">
+            <input type="hidden" asp-for="UserId" />
+
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="UserName" class="form-control" placeholder="Username" />
+                <label asp-for="UserName">Username</label>
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="EmailId" class="form-control" placeholder="Email" />
+                <label asp-for="EmailId">Email</label>
+                <span asp-validation-for="EmailId" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="PhoneNumber" class="form-control" placeholder="Phone Number" />
+                <label asp-for="PhoneNumber">Phone Number</label>
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Country" class="form-control" placeholder="Country" />
+                <label asp-for="Country">Country</label>
+                <span asp-validation-for="Country" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3 text-center">
+                <label asp-for="ProfileImage" class="form-label">Profile Image</label><br />
+                <img src="@Url.Content(Model?.ProfileImage != null ? "~/images/" + Model.ProfileImage : "~/images/default-profile.png")"
+                     class="rounded mb-2"
+                     width="100"
+                     height="100"
+                     style="object-fit: cover;" />
+                <input asp-for="ProfileImage" type="file" class="form-control mt-2" />
+            </div>
+
+            <div class="d-grid mb-3">
+                <button type="submit" class="btn btn-gradient btn-primary btn-lg fw-bold">Update User</button>
+            </div>
+
+            <div class="text-center">
+                <a asp-action="ViewAllUsers" class="text-decoration-none">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+<style>
+    /* Gradient button */
+    .btn-gradient {
+        color: #fff;
+        transition: 0.3s;
+    }
+
+        .btn-gradient:hover {
+            color: #fff;
+        }
+
+    /* Smooth input focus */
+    .form-control:focus {
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        border-color: #667eea;
+    }
+
+    /* Card styling */
+    .card {
+        background-color: #fff;
+    }
+</style>
